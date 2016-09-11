@@ -23,5 +23,98 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
         </scene>
+        <!--Left View Controller-->
+        <scene sceneID="QlQ-No-yYV">
+            <objects>
+                <viewController id="I82-pp-XlJ" customClass="LeftViewController" customModule="BackButton" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="t4c-H9-aqi"/>
+                        <viewControllerLayoutGuide type="bottom" id="wMh-GB-oxu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="QUU-lQ-zeu">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cSt-MR-t6a">
+                                <frame key="frameInset" minX="136" minY="142" width="102" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Show Detail -&gt;"/>
+                                <connections>
+                                    <action selector="pushContent:" destination="I82-pp-XlJ" eventType="touchUpInside" id="XS7-K4-3Eu"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.76855928886879687" green="0.81182423250175828" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="QKV-E6-RY8"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BxN-Or-8JJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1801" y="-209"/>
+        </scene>
+        <!--Right View Controller-->
+        <scene sceneID="0J5-bi-498">
+            <objects>
+                <viewController id="sTw-YA-mg6" customClass="RightViewController" customModule="BackButton" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jih-jm-ePb"/>
+                        <viewControllerLayoutGuide type="bottom" id="33Q-4R-c8s"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="rTh-48-qug">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Rzv-Xt-t3f">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="kaX-JI-5aX">
+                            <connections>
+                                <segue destination="sTw-YA-mg6" kind="show" id="qKs-Td-8nB"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zPU-EN-4tA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1775" y="555"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ROQ-Rg-BxE">
+            <objects>
+                <navigationController storyboardIdentifier="RightNavController" automaticallyAdjustsScrollViewInsets="NO" id="VIR-Ag-nrc" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gQU-lu-RFM">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="sTw-YA-mg6" kind="relationship" relationship="rootViewController" id="GNH-cS-xQA"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TMd-Ef-xGS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="865" y="556"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Weu-7Q-sll">
+            <objects>
+                <navigationController storyboardIdentifier="LeftNavController" automaticallyAdjustsScrollViewInsets="NO" id="XUT-Eg-Rdv" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Eql-kS-rUl">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="I82-pp-XlJ" kind="relationship" relationship="rootViewController" id="cRh-Tz-bDt"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d8R-x1-Jsf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="865" y="-209"/>
+        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="GNH-cS-xQA"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -13,6 +13,8 @@
 		42928FFF1D859CC100110F22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42928FFE1D859CC100110F22 /* Assets.xcassets */; };
 		429290021D859CC100110F22 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 429290001D859CC100110F22 /* LaunchScreen.storyboard */; };
 		4292900D1D859CC200110F22 /* BackButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4292900C1D859CC200110F22 /* BackButtonTests.swift */; };
+		429290181D85A06000110F22 /* LeftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429290171D85A06000110F22 /* LeftViewController.swift */; };
+		4292901A1D85A06C00110F22 /* RightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429290191D85A06C00110F22 /* RightViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,8 @@
 		429290081D859CC200110F22 /* BackButtonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BackButtonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4292900C1D859CC200110F22 /* BackButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButtonTests.swift; sourceTree = "<group>"; };
 		4292900E1D859CC200110F22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		429290171D85A06000110F22 /* LeftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftViewController.swift; sourceTree = "<group>"; };
+		429290191D85A06C00110F22 /* RightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,9 +81,8 @@
 		42928FF61D859CC100110F22 /* BackButton */ = {
 			isa = PBXGroup;
 			children = (
+				4292901B1D85A0A900110F22 /* View Controllers */,
 				42928FF71D859CC100110F22 /* AppDelegate.swift */,
-				42928FF91D859CC100110F22 /* ContainerViewController.swift */,
-				42928FFB1D859CC100110F22 /* Main.storyboard */,
 				42928FFE1D859CC100110F22 /* Assets.xcassets */,
 				429290001D859CC100110F22 /* LaunchScreen.storyboard */,
 				429290031D859CC100110F22 /* Info.plist */,
@@ -94,6 +97,17 @@
 				4292900E1D859CC200110F22 /* Info.plist */,
 			);
 			path = BackButtonTests;
+			sourceTree = "<group>";
+		};
+		4292901B1D85A0A900110F22 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				42928FF91D859CC100110F22 /* ContainerViewController.swift */,
+				42928FFB1D859CC100110F22 /* Main.storyboard */,
+				429290171D85A06000110F22 /* LeftViewController.swift */,
+				429290191D85A06C00110F22 /* RightViewController.swift */,
+			);
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -201,6 +215,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				429290181D85A06000110F22 /* LeftViewController.swift in Sources */,
+				4292901A1D85A06C00110F22 /* RightViewController.swift in Sources */,
 				42928FFA1D859CC100110F22 /* ContainerViewController.swift in Sources */,
 				42928FF81D859CC100110F22 /* AppDelegate.swift in Sources */,
 			);
