@@ -9,7 +9,7 @@
         <!--Container View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ContainerViewController" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ContainerViewController" customModule="BackButton" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -40,6 +40,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Show Detail -&gt;"/>
                                 <connections>
+                                    <action selector="pushContent:" destination="BxN-Or-8JJ" eventType="touchUpInside" id="D1g-cN-1MK"/>
                                     <action selector="pushContent:" destination="I82-pp-XlJ" eventType="touchUpInside" id="XS7-K4-3Eu"/>
                                 </connections>
                             </button>
