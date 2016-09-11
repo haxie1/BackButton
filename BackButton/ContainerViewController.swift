@@ -9,7 +9,7 @@
 import UIKit
 
 class ContainerViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -19,11 +19,11 @@ class ContainerViewController: UIViewController {
         
         // setup a fake navigation item on the Right side (content) child view controller
         // for sake of sample project, assume a nav controller
-        if let rightVC = self.childViewControllers.last as? UINavigationController {
+        if let rightVC = self.childViewControllers.last as? UINavigationController, let leftVC = self.childViewControllers.first as? UINavigationController {
             
             // insert the fake item in the rightVC navigation bar.items at the top index.
             // this is what makes the nav bar believe it should show a back button
-            let fakeItem = UINavigationItem(title: "Back")
+            let fakeItem = UINavigationItem(title: leftVC.title ?? "Back")
             rightVC.navigationBar.items?.insert(fakeItem, at: 0)
             
             // our ourselves as the delegate so we can manage the navigation bar items ourselves.
