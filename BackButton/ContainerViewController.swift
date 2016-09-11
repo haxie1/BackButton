@@ -9,6 +9,7 @@
 import UIKit
 
 class ContainerViewController: UIViewController {
+    private let fakeBackItem = UINavigationItem() // create a fake back item with the default title
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,12 +24,11 @@ class ContainerViewController: UIViewController {
             
             // insert the fake item in the rightVC navigation bar.items at the top index.
             // this is what makes the nav bar believe it should show a back button
-            let fakeItem = UINavigationItem(title: leftVC.title ?? "Back")
-            rightVC.navigationBar.items?.insert(fakeItem, at: 0)
+            self.fakeBackItem.title = leftVC.title ?? "Back"
+            rightVC.navigationBar.items?.insert(self.fakeBackItem, at: 0)
             
             // our ourselves as the delegate so we can manage the navigation bar items ourselves.
             rightVC.navigationBar.delegate = self
-            
         }
     }
     
