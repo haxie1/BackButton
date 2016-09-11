@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ContainerViewController.swift
 //  BackButton
 //
 //  Created by Kam Dahlin on 9/11/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ContainerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
