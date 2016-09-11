@@ -12,8 +12,7 @@ class LeftViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.title = "Left View"
     }
 
     override func didReceiveMemoryWarning() {
