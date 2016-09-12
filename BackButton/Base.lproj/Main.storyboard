@@ -40,8 +40,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Show Detail -&gt;"/>
                                 <connections>
-                                    <action selector="pushContent:" destination="BxN-Or-8JJ" eventType="touchUpInside" id="D1g-cN-1MK"/>
-                                    <action selector="pushContent:" destination="I82-pp-XlJ" eventType="touchUpInside" id="XS7-K4-3Eu"/>
+                                    <action selector="pushContent:" destination="BxN-Or-8JJ" eventType="touchUpInside" id="KJa-Y6-LZV"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -64,7 +63,19 @@
                     <view key="view" contentMode="scaleToFill" id="rTh-48-qug">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UDo-gX-KhG">
+                                <frame key="frameInset" minX="166" minY="136" width="42" height="35"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="UDo-gX-KhG" firstAttribute="top" secondItem="jih-jm-ePb" secondAttribute="bottom" constant="72" id="A9C-hO-h9Y"/>
+                            <constraint firstItem="UDo-gX-KhG" firstAttribute="centerX" secondItem="rTh-48-qug" secondAttribute="centerX" id="OVL-D4-Hg5"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Rzv-Xt-t3f">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="kaX-JI-5aX">
@@ -73,10 +84,13 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="label" destination="UDo-gX-KhG" id="Bwu-BC-jtP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zPU-EN-4tA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1775" y="555"/>
+            <point key="canvasLocation" x="1773.5999999999999" y="554.57271364317842"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ROQ-Rg-BxE">

@@ -1,4 +1,4 @@
-//
+    //
 //  ContainerViewController.swift
 //  BackButton
 //
@@ -9,35 +9,56 @@
 import UIKit
 
 class ContainerViewController: UIViewController {
-    private let fakeBackItem = UINavigationItem() // create a fake back item with the default title
+    fileprivate let fakeBackItem = UINavigationItem() // create a fake back item with the default title
+    fileprivate var managedNavBarController: UINavigationController? {
+        return self.childControllers.last as? UINavigationController
+    }
+    
+    private var childControllers: [UIViewController] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         // setup a fake navigation item on the Right side (content) child view controller
         // for sake of sample project, assume a nav controller
-        if let rightVC = self.childViewControllers.last as? UINavigationController, let leftVC = self.childViewControllers.first as? UINavigationController {
-            
-            // insert the fake item in the rightVC navigation bar.items at the top index.
-            // this is what makes the nav bar believe it should show a back button
-            self.fakeBackItem.title = leftVC.title ?? "Back"
-            rightVC.navigationBar.items?.insert(self.fakeBackItem, at: 0)
-            
-            // our ourselves as the delegate so we can manage the navigation bar items ourselves.
+        
+        if let rightVC = self.managedNavBarController {
+            var items = rightVC.navigationBar.items ?? []
+            items.insert(self.fakeBackItem, at: 0)
+            rightVC.navigationBar.setItems(items, animated: false)
             rightVC.navigationBar.delegate = self
+        }
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let leftVC = self.childViewControllers.first {
+            self.fakeBackItem.title = leftVC.title
         }
     }
     
     @IBAction func pushContent(_ sender: AnyObject) {
-        
+        self.performNavigation(type: .push)
+    }
+    
+    func popContent() {
+        self.performNavigation(type: .pop)
     }
     
     func addChildControllers(controllers: [UIViewController]) {
+        self.childControllers = controllers
+        
         for (index, controller) in controllers.enumerated() {
+            self.insertChildController(controller: controller, at: index)
+        }
+    }
+    
+    private func insertChildController(controller: UIViewController, at index: Int) {
+        if !self.childViewControllers.contains(controller) {
             self.addChildViewController(controller)
             self.view.insertSubview(controller.view, at: index)
             controller.view.frame = self.view.bounds
@@ -46,8 +67,70 @@ class ContainerViewController: UIViewController {
                 // push the left side view controller off screen
                 controller.view.frame.origin.x = self.view.bounds.width * -1
             }
+            
             controller.didMove(toParentViewController: self)
         }
+    }
+    
+    private func removeChildController(controller: UIViewController) {
+        if self.childViewControllers.contains(controller) {
+            controller.willMove(toParentViewController: nil)
+            controller.view.removeFromSuperview()
+            controller.removeFromParentViewController()
+        }
+    }
+    
+    private func performNavigation(type: NavigationType) {
+        guard let leftVC = self.childControllers.first, let rightVC = self.childControllers.last else {
+            return
+        }
+        
+        let animator = self.animator(forType: type, leftController: leftVC, rightController: rightVC)
+        animator?.startAnimation()
+    }
+    
+    private func animator(forType type: NavigationType, leftController: UIViewController, rightController: UIViewController) -> UIViewPropertyAnimator? {
+        let animator = UIViewPropertyAnimator(duration: 0.3, timingParameters: UISpringTimingParameters())
+        switch type {
+        case .push:
+            self.insertChildController(controller: rightController, at: 1)
+            rightController.view.frame.origin.x = self.view.bounds.width
+            break
+        case .pop:
+            self.insertChildController(controller: leftController, at: 0)
+            leftController.view.frame.origin.x = self.view.bounds.width * -1
+            break
+        }
+        
+        animator.addAnimations {
+            switch type {
+            case .pop:
+                leftController.view.frame.origin.x = 0.0
+                rightController.view.frame.origin.x = self.view.bounds.width
+                break
+            case .push:
+                
+                leftController.view.frame.origin.x = self.view.bounds.width * -1
+                rightController.view.frame.origin.x = 0.0
+                
+                break
+            }
+        }
+        
+        animator.addCompletion { (position) in
+            if position == .end {
+                switch type {
+                case .pop:
+                    self.removeChildController(controller: rightController)
+                    break
+                    
+                case .push:
+                    self.removeChildController(controller: leftController)
+                    break
+                }
+            }
+        }
+        return animator
     }
 }
 
@@ -55,13 +138,22 @@ extension ContainerViewController: UINavigationBarDelegate {
     func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
         // A fake item was added above the navigation item of the rootViewController of the right side navigation controller and we need to manage the pop action between the two items.
         
-        if navigationBar.items?.count == 2 {
-            // this is our hook to handle the back navigation.
-            // for production this should probably be a beefier check, but the idea is that we don't want to pop to the fake navigation item
-            return false
+        if let managedNav = self.managedNavBarController {
+            if managedNav.topViewController == managedNav.childViewControllers.first {
+                
+                self.popContent()
+                return false
+            }
+            
+            // need to manage poping the navigation controller's child controllers ourselves.
+            managedNav.popViewController(animated: true)
         }
-        
-        // let other items get handled normally.
+    
         return true
     }
+}
+
+enum NavigationType {
+    case pop
+    case push
 }
