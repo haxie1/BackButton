@@ -1,2 +1,4 @@
 # BackButton
-Sample project demonstrating how to get UIViewController to show a UIBackButtonItem
+Sample project demonstrating how to get UINavigationController to show a UIBackButtonItem when it otherwise wouldn’t.
+
+This is mainly an exercise in seeing what is possible using fake navigation items to get the system to display a valid back button while managing transitions with a custom navigation bar delegate in container controller. Apple’s documentation says not to change a navigation controller’s navigationBar delegate, even though it is possible to do so. 
