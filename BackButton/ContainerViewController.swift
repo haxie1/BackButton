@@ -9,8 +9,8 @@
 import UIKit
 
 class ContainerViewController: UIViewController {
-    fileprivate var managedNavBarController: ManagedNavBarNavController? {
-        return self.childControllers.last as? ManagedNavBarNavController
+    fileprivate var managedNavBarController: ManagedBackButtonNavController? {
+        return self.childControllers.last as? ManagedBackButtonNavController
     }
     
     private var childControllers: [UIViewController] = []
@@ -21,11 +21,11 @@ class ContainerViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         // setup a fake navigation item on the Right side (content) child view controller
         // for sake of sample project, assume a nav controller
-        
-        if let rightVC = self.managedNavBarController {
-            rightVC.handleBackButtonTap = {
+        if let rightVC = self.managedNavBarController as? UINavigationController {
+            rightVC.manage {
                 self.popContent()
             }
         }
@@ -136,27 +136,69 @@ enum NavigationType {
     case pop
     case push
 }
-
+    private class CopyWrapper: NSObject, NSCopying {
+        var closure: (() -> Void)?
+        
+        convenience init(closure: (() -> Void)?) {
+            self.init()
+            self.closure = closure
+        }
+        
+        func copy(with zone: NSZone? = nil) -> Any {
+            let wrapper: CopyWrapper = CopyWrapper()
+            wrapper.closure = closure
+            
+            return wrapper
+        }
+    }
     
-    // Trying to managed the navigation bar delegate with an object that isn't the nav bar's navigation controller makes the system angry. 
-    // To work around this, make the navigation bar the delegate of the nav controller and handle the item setup and nav bar delegation with the nav controller.
-    class ManagedNavBarNavController: UINavigationController, UINavigationBarDelegate {
-        var backButtonTitle: String = "Back" {
-            didSet {
-                self.navigationBar.items?.first?.title = backButtonTitle
+    protocol ManagedBackButtonNavController: class {
+        var backButtonTitle: String { get set }
+        func manage(usingBackButtonHandler handler: @escaping () -> Void)
+    }
+    
+    extension UINavigationController: ManagedBackButtonNavController, UINavigationBarDelegate {
+        @nonobjc static var backButtonActionKey: String = "backButtonKey"
+        @nonobjc static var registered: Bool = false
+        
+        var backButtonTitle: String {
+            set (newValue) {
+                if UINavigationController.registered {
+                    self.navigationBar.items?.first?.title = newValue
+                }
+            }
+            get {
+                return self.navigationBar.items?.first?.title ?? "Back"
             }
         }
         
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            let nav = UINavigationItem(title: self.backButtonTitle)
-            self.navigationBar.items?.insert(nav, at: 0)
+        internal func manage(usingBackButtonHandler handler: @escaping () -> Void) {
+            if !UINavigationController.registered {
+                UINavigationController.registered = true
+                
+                self.navigationBar.items?.insert(UINavigationItem(title: self.backButtonTitle), at: 0)
+                if self.navigationBar.delegate == nil {
+                    self.navigationBar.delegate = self
+                }
+                
+                self.backButtonHandler = handler
+            }
         }
         
-        // custom handler that is called when the fake back button item is pressed.
-        var handleBackButtonTap: () -> Void = {_ in}
+        private var backButtonHandler: () -> Void {
+            set (newValue) {
+                let closure = CopyWrapper(closure: newValue)
+                objc_setAssociatedObject(self, &UINavigationController.backButtonActionKey, closure, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+            }
+            
+            get {
+                let closure = objc_getAssociatedObject(self, &UINavigationController.backButtonActionKey) as? CopyWrapper
+                return closure?.closure ?? { _ in }
+            }
+        }
+
         
-        func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
+        public func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
             if self.childViewControllers.count > 1 {
                 self.popViewController(animated: true)
                 return true
@@ -166,9 +208,10 @@ enum NavigationType {
             // re-add the fake item and the exiting item to the items array so that the navigation bar is correct when re-presented.
             let first = UINavigationItem(title: self.backButtonTitle)
             navigationBar.items = [first, item]
-            self.handleBackButtonTap()
+            self.backButtonHandler()
             
             return false
         }
-    }
 
+    }
+    

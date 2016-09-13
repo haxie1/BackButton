@@ -92,10 +92,10 @@
             </objects>
             <point key="canvasLocation" x="1773.5999999999999" y="554.57271364317842"/>
         </scene>
-        <!--Managed Nav Bar Nav Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="ROQ-Rg-BxE">
             <objects>
-                <navigationController storyboardIdentifier="RightNavController" automaticallyAdjustsScrollViewInsets="NO" id="VIR-Ag-nrc" customClass="ManagedNavBarNavController" customModule="BackButton" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="RightNavController" automaticallyAdjustsScrollViewInsets="NO" id="VIR-Ag-nrc" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="gQU-lu-RFM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
