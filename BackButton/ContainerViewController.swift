@@ -9,9 +9,8 @@
 import UIKit
 
 class ContainerViewController: UIViewController {
-    fileprivate let fakeBackItem = UINavigationItem() // create a fake back item with the default title
-    fileprivate var managedNavBarController: UINavigationController? {
-        return self.childControllers.last as? UINavigationController
+    fileprivate var managedNavBarController: ManagedNavBarNavController? {
+        return self.childControllers.last as? ManagedNavBarNavController
     }
     
     private var childControllers: [UIViewController] = []
@@ -26,10 +25,9 @@ class ContainerViewController: UIViewController {
         // for sake of sample project, assume a nav controller
         
         if let rightVC = self.managedNavBarController {
-            var items = rightVC.navigationBar.items ?? []
-            items.insert(self.fakeBackItem, at: 0)
-            rightVC.navigationBar.setItems(items, animated: false)
-            rightVC.navigationBar.delegate = self
+            rightVC.handleBackButtonTap = {
+                self.popContent()
+            }
         }
 
     }
@@ -37,7 +35,7 @@ class ContainerViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let leftVC = self.childViewControllers.first {
-            self.fakeBackItem.title = leftVC.title
+            self.managedNavBarController?.backButtonTitle = leftVC.title ?? "Back"
         }
     }
     
@@ -134,26 +132,43 @@ class ContainerViewController: UIViewController {
     }
 }
 
-extension ContainerViewController: UINavigationBarDelegate {
-    func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
-        // A fake item was added above the navigation item of the rootViewController of the right side navigation controller and we need to manage the pop action between the two items.
-        
-        if let managedNav = self.managedNavBarController {
-            if managedNav.topViewController == managedNav.childViewControllers.first {
-                
-                self.popContent()
-                return false
-            }
-            
-            // need to manage poping the navigation controller's child controllers ourselves.
-            managedNav.popViewController(animated: true)
-        }
-    
-        return true
-    }
-}
-
 enum NavigationType {
     case pop
     case push
 }
+
+    
+    // Trying to managed the navigation bar delegate with an object that isn't the nav bar's navigation controller makes the system angry. 
+    // To work around this, make the navigation bar the delegate of the nav controller and handle the item setup and nav bar delegation with the nav controller.
+    class ManagedNavBarNavController: UINavigationController, UINavigationBarDelegate {
+        var backButtonTitle: String = "Back" {
+            didSet {
+                self.navigationBar.items?.first?.title = backButtonTitle
+            }
+        }
+        
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            let nav = UINavigationItem(title: self.backButtonTitle)
+            self.navigationBar.items?.insert(nav, at: 0)
+        }
+        
+        // custom handler that is called when the fake back button item is pressed.
+        var handleBackButtonTap: () -> Void = {_ in}
+        
+        func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
+            if self.childViewControllers.count > 1 {
+                self.popViewController(animated: true)
+                return true
+            }
+            
+            // Recreate the fake back button item so that the button is refreshed after being pressed.
+            // re-add the fake item and the exiting item to the items array so that the navigation bar is correct when re-presented.
+            let first = UINavigationItem(title: self.backButtonTitle)
+            navigationBar.items = [first, item]
+            self.handleBackButtonTap()
+            
+            return false
+        }
+    }
+
